@@ -22,7 +22,7 @@ public abstract class Book implements Purchasable {
         this.discount = 0;
         this.addedDate = LocalDate.now();
     }
-
+//комментарий
     public String getTitle() {
         return title;
     }
