@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,6 +68,21 @@ public class Shelf {
         throw new BookNotFoundException("Книга '" + title + "' не найдена");
     }
 
+    public ArrayList<Book> findBooksByDate(LocalDate addedDate) {
+        ArrayList<Book> foundBooks = new ArrayList<>();
+        for (Book book : books) {
+            if(book.getAddedDate().equals(addedDate)){
+                foundBooks.add(book);
+            }
+        }
+        if(foundBooks.isEmpty()){
+            throw new BookNotFoundException("Книг, добавленных " + addedDate.toString() + " не найдено");
+        } else {
+            return foundBooks;
+        }
+
+    }
+
     public List<Book> findAuthor(String author) {
         List<Book> authorBooks = new ArrayList<>();
         for (Book book : books) {
@@ -89,6 +105,14 @@ public class Shelf {
         books.sort(Comparator
             .comparing(Book::getTitle)
             .thenComparing(Book::getAuthor)
+        );
+    }
+
+    public void sortByDate(){
+        books.sort(Comparator
+                .comparing(Book::getAddedDate)
+                .thenComparing(Book::getTitle)
+                .thenComparing(Book::getAuthor)
         );
     }
 

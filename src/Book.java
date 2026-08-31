@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public abstract class Book implements Purchasable{
     private String title; // название книги
     private String author; // автор
@@ -6,6 +8,7 @@ public abstract class Book implements Purchasable{
     private boolean isPurchased;// прочитана ли книга (по умолчанию false)
     private int discount;
     private Genre genre;
+    private LocalDate addedDate;
 
     public Book(String title, String author, int pages, Genre genre) {
         this.title = title;
@@ -15,6 +18,7 @@ public abstract class Book implements Purchasable{
         this.isRead = false;
         this.isPurchased = false;
         this.discount = 0;
+        this.addedDate = LocalDate.now();
     }
 
     public String getTitle() {
@@ -27,6 +31,10 @@ public abstract class Book implements Purchasable{
 
     public int getPages() {
         return pages;
+    }
+
+    public LocalDate getAddedDate() {
+        return addedDate;
     }
 
     public boolean isRead() {
@@ -62,7 +70,7 @@ public abstract class Book implements Purchasable{
         }
 
         return status + ". Жанр -> " + getGenre().getName() + " || Книга: \"" + getTitle() + "\" (" + getAuthor() + ", " + getPages() + " стр.), цена "
-                + getPrice() + " руб., " + purchaseStatus + ".";
+                + getPrice() + " руб., " + purchaseStatus + ". " + "Дата добавления  - " + getAddedDate().toString();
     }
 
     public String getType() {

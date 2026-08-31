@@ -3,7 +3,7 @@ public class Main {
         Library library = new Library();
         library.addBook(new PaperBook("451 Градус по Фаренгейту", "Р.Брэдберри", 500, Genre.SCIENCE_FICTION));
         library.addBook(new PaperBook("Остров сокровищ", "Р.Л.Стивенсон", 700, Genre.ADVENTURE));
-        /* library.addBook(new PaperBook("Каменный город", "Д.Мартин", 1200, Genre.SCIENCE_FICTION));
+        library.addBook(new PaperBook("Каменный город", "Д.Мартин", 1200, Genre.SCIENCE_FICTION));
         library.addBook(new PaperBook("Долгий джонт", "С.Кинг", 120, Genre.SCIENCE_FICTION));
         library.addBook(new PaperBook("Мизери", "С.Кинг", 220, Genre.HORROR));
         library.addBook(new PaperBook("1963", "С.Кинг", 520, Genre.ADVENTURE));
@@ -15,24 +15,9 @@ public class Main {
         library.addBook(new AudioBook("Унесенные ветром", "М.Митчелл", 1350, Genre.DRAMA, 100));
         library.addBook(new PaperBook("Мастер и Маргарита", "М.Булгаков", 900, Genre.MYSTERY));
         library.addBook(new PaperBook("Дневник Памяти", "Н.Спаркс", 400, Genre.ROMANCE));
-        */
+
         library.printAllBooks();
-        /*library.markBookAsRead("Принц Госплана");
-        library.markBookAsRead("Каменный город");
-        library.printUnreadBooks();
-        System.out.println("Прочитанных книг в библиотеке: " + library.countReadBooks());
-        library.buy("Эротофобия");
-        library.buy("Дневник Памяти");
-        library.getTotalPrice();
-        library.printPurchasedBooks();
-        library.printBooksByAuthor("А.Азимов");
-        library.printBooksByAuthor("С.Кинг");
-        library.printAllAuthors();
-        library.printTotalPrice();
-        */
-        library.removeBook("Остров сокровищ");
-        library.printAllBooks();
-        library.findBook("Остров сокровищ");
+        library.sortByAddedDate();
         library.printAllBooks();
     }
 }
