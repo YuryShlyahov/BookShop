@@ -1,4 +1,6 @@
-public class AudioBook extends Book implements Discountable{
+package model;
+
+public class AudioBook extends Book implements Discountable {
     private int duration;
     private static final double PRICE_FOR_MINUTE = 1.5;
 
@@ -14,11 +16,6 @@ public class AudioBook extends Book implements Discountable{
     @Override
     public String getDescription() {
         return super.getDescription() + " | Аудиокнига, " + getDuration() + " мин.";
-    }
-
-    @Override
-    public String getType() {
-        return "AudioBook";
     }
 
     @Override

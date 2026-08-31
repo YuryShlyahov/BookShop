@@ -1,3 +1,5 @@
+package model;
+
 public enum Genre {
     SCIENCE_FICTION("Научная фантастика"),
     MYSTERY("Мистика"),

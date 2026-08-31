@@ -1,3 +1,8 @@
+package service;
+
+import exception.BookNotFoundException;
+import model.Book;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +47,7 @@ public class Library {
         throw new BookNotFoundException("Книга '" + title + "' не найдена в библиотеке");
     }
 
-    public ArrayList<Book> findBookByDate(LocalDate addedDate) throws BookNotFoundException {
+    public List<Book> findBookByDate(LocalDate addedDate) throws BookNotFoundException {
         ArrayList<Book> foundBooks = new ArrayList<>();
         for (Shelf shelf : shelves) {
             try {
@@ -51,9 +56,10 @@ public class Library {
                 // не нашли на этой полке — идём дальше
             }
         }
-        throw new BookNotFoundException("Книги, добавленные " + addedDate.toString() + " не найдены в библиотеке");
-
-
+        if(foundBooks.isEmpty()){
+            throw new BookNotFoundException("Книги, добавленные " + addedDate.toString() + " не найдены в библиотеке");
+        }
+        return foundBooks;
     }
 
     public List<Book> findAuthor(String author) {

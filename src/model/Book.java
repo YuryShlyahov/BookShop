@@ -1,6 +1,8 @@
+package model;
+
 import java.time.LocalDate;
 
-public abstract class Book implements Purchasable{
+public abstract class Book implements Purchasable {
     private String title; // название книги
     private String author; // автор
     private int pages; // количество страниц
@@ -71,10 +73,6 @@ public abstract class Book implements Purchasable{
 
         return status + ". Жанр -> " + getGenre().getName() + " || Книга: \"" + getTitle() + "\" (" + getAuthor() + ", " + getPages() + " стр.), цена "
                 + getPrice() + " руб., " + purchaseStatus + ". " + "Дата добавления  - " + getAddedDate().toString();
-    }
-
-    public String getType() {
-        return "Book";
     }
 
     public Genre getGenre() {

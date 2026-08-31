@@ -1,3 +1,5 @@
+package model;
+
 public class EBook extends Book implements Discountable {
     private double fileSize;
     private static final double PRICE_FOR_MB = 10;
@@ -14,11 +16,6 @@ public class EBook extends Book implements Discountable {
     @Override
     public String getDescription() {
         return super.getDescription() + " | Электронная версия, " + getFileSize() + " МБ";
-    }
-
-    @Override
-    public String getType() {
-        return "EBook";
     }
 
     @Override

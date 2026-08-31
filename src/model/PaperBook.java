@@ -1,4 +1,6 @@
-public class PaperBook extends Book{
+package model;
+
+public class PaperBook extends Book {
     private static final double PRICE_FOR_PAGE = 2;
 
     public PaperBook(String title, String author, int pages, Genre genre) {
