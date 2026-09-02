@@ -172,13 +172,20 @@ public class Library {
             System.out.println("Купленных книг не найдено");
         }
     }
-    public void removeBook(String title) {
+    public void removeBook(String title) throws BookNotFoundException {
+        boolean removed = false;
         Iterator<Shelf> iterator = shelves.iterator();
         while (iterator.hasNext()) {
             Shelf shelf = iterator.next();
-            if (shelf.removeBook(title) && shelf.getBooks().isEmpty()) {
-                iterator.remove();
+            if (shelf.removeBook(title)) {
+                removed = true;
+                if (shelf.getBooks().isEmpty()) {
+                    iterator.remove();
+                }
             }
+        }
+        if (!removed) {
+            throw new BookNotFoundException("Книга '" + title + "' не найдена в библиотеке");
         }
     }
 
