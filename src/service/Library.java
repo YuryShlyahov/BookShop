@@ -10,26 +10,26 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Library {
-    private List<Shelf> shelves;
+    private List<Shelf<Book>> shelves;
 
     public Library() {
-    shelves = new ArrayList<>();
+        shelves = new ArrayList<>();
     }
 
-    public void addBook(Book book){
-        for(Shelf shelf : shelves){
-            if(shelf.getGenre().equals(book.getGenre())){
+    public void addBook(Book book) {
+        for (Shelf<Book> shelf : shelves) {
+            if (shelf.getGenre().equals(book.getGenre())) {
                 shelf.addBook(book);
                 return;
             }
         }
-        Shelf shelf = new Shelf(book.getGenre());
+        Shelf<Book> shelf = new Shelf(book.getGenre());
         shelf.addBook(book);
         shelves.add(shelf);
     }
 
-    public void printAllBooks(){
-        for (Shelf shelf : shelves){
+    public void printAllBooks() {
+        for (Shelf<Book> shelf : shelves) {
             System.out.println("Книги жанра - " + shelf.getGenre().getName());
             shelf.printAllBooks();
             System.out.println("***************************");
@@ -37,7 +37,7 @@ public class Library {
     }
 
     public Book findBook(String title) throws BookNotFoundException {
-        for (Shelf shelf : shelves) {
+        for (Shelf<Book> shelf : shelves) {
             try {
                 return shelf.findBook(title);
             } catch (BookNotFoundException e) {
@@ -49,32 +49,32 @@ public class Library {
 
     public List<Book> findBookByDate(LocalDate addedDate) throws BookNotFoundException {
         ArrayList<Book> foundBooks = new ArrayList<>();
-        for (Shelf shelf : shelves) {
+        for (Shelf<Book> shelf : shelves) {
             try {
                 foundBooks.addAll(shelf.findBooksByDate(addedDate));
             } catch (BookNotFoundException e) {
                 // не нашли на этой полке — идём дальше
             }
         }
-        if(foundBooks.isEmpty()){
+        if (foundBooks.isEmpty()) {
             throw new BookNotFoundException("Книги, добавленные " + addedDate.toString() + " не найдены в библиотеке");
         }
         return foundBooks;
     }
 
     public List<Book> findAuthor(String author) {
-        List<Book>authorBooks = new ArrayList<>();
-        for (Shelf shelf : shelves) {
-           authorBooks.addAll(shelf.findAuthor(author));
+        List<Book> authorBooks = new ArrayList<>();
+        for (Shelf<Book> shelf : shelves) {
+            authorBooks.addAll(shelf.findAuthor(author));
         }
         return authorBooks;
     }
 
-    public List<String> findAllAuthors(){
+    public List<String> findAllAuthors() {
         List<String> authors = new ArrayList<>();
-        for (Shelf shelf : shelves){
-            for(String author : shelf.findAllAuthors()) {
-                if(!authors.contains(author)) {
+        for (Shelf<Book> shelf : shelves) {
+            for (String author : shelf.findAllAuthors()) {
+                if (!authors.contains(author)) {
                     authors.add(author);
                 }
             }
@@ -85,11 +85,11 @@ public class Library {
     public void printAllAuthors() {
         List<String> authors = findAllAuthors();
         Collections.sort(authors);
-        if(authors.isEmpty()){
+        if (authors.isEmpty()) {
             System.out.println("Авторы не найдены");
         } else {
             System.out.println("Найденные авторы: ");
-            for (String author : authors){
+            for (String author : authors) {
                 System.out.println(author);
             }
         }
@@ -109,24 +109,25 @@ public class Library {
 
     public int countReadBooks() {
         int sum = 0;
-        for (Shelf shelf : shelves) {
+        for (Shelf<Book> shelf : shelves) {
             sum += shelf.countReadBooks();
         }
         return sum;
     }
 
     public List<Book> findUnreadBooks() {
-        List<Book>unreadBooks = new ArrayList<>();
-        for (Shelf shelf : shelves) {
+        List<Book> unreadBooks = new ArrayList<>();
+        for (Shelf<Book> shelf : shelves) {
             unreadBooks.addAll(shelf.findUnreadBooks());
         }
         return unreadBooks;
     }
+
     public void printUnreadBooks() {
-        List<Book>unreadBooks = findUnreadBooks();
-        if(!unreadBooks.isEmpty()){
+        List<Book> unreadBooks = findUnreadBooks();
+        if (!unreadBooks.isEmpty()) {
             System.out.println("Список непрочитанных книг : ");
-            for (Book book : unreadBooks){
+            for (Book book : unreadBooks) {
                 System.out.println(book.getDescription());
             }
         } else {
@@ -144,26 +145,27 @@ public class Library {
 
     public double getTotalPrice() {
         double totalPrice = 0;
-        for (Shelf shelf : shelves) {
+        for (Shelf<Book> shelf : shelves) {
             totalPrice += shelf.getTotalPrice();
         }
         return totalPrice;
     }
 
-    public void printTotalPrice(){
+    public void printTotalPrice() {
         System.out.println("Общая цена за книги в библиотеке: " + getTotalPrice());
     }
 
-    public List<Book> findPurchasedBooks(){
+    public List<Book> findPurchasedBooks() {
         List<Book> purchasedBooks = new ArrayList<>();
-        for (Shelf shelf : shelves){
+        for (Shelf<Book> shelf : shelves) {
             purchasedBooks.addAll(shelf.findPurchasedBooks());
         }
         return purchasedBooks;
     }
-    public void printPurchasedBooks(){
+
+    public void printPurchasedBooks() {
         List<Book> purchasedBooks = findPurchasedBooks();
-        if (!purchasedBooks.isEmpty()){
+        if (!purchasedBooks.isEmpty()) {
             System.out.println("Купленные книги: ");
             for (Book book : purchasedBooks) {
                 System.out.println(book.getDescription());
@@ -172,11 +174,12 @@ public class Library {
             System.out.println("Купленных книг не найдено");
         }
     }
+
     public void removeBook(String title) throws BookNotFoundException {
         boolean removed = false;
-        Iterator<Shelf> iterator = shelves.iterator();
+        Iterator<Shelf<Book>> iterator = shelves.iterator();
         while (iterator.hasNext()) {
-            Shelf shelf = iterator.next();
+            Shelf<Book> shelf = iterator.next();
             if (shelf.removeBook(title)) {
                 removed = true;
                 if (shelf.getBooks().isEmpty()) {
@@ -189,14 +192,11 @@ public class Library {
         }
     }
 
-    public void sortByAddedDate(){
-        for (Shelf shelf : shelves) {
+    public void sortByAddedDate() {
+        for (Shelf<Book> shelf : shelves) {
             shelf.sortByDate();
         }
     }
-
-
-
 }
 
 

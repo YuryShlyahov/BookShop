@@ -10,11 +10,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Shelf {
-    private List<Book> books; // — список книг на полке (пустой при создании)
+public class Shelf <T extends Book> {
+    private List<T> books; // — список книг на полке (пустой при создании)
     private final Genre genre;
 
-    public List<Book> getBooks() {
+    public List<T> getBooks() {
         return Collections.unmodifiableList(books);
     }
 
@@ -27,19 +27,19 @@ public class Shelf {
         return genre;
     }
 
-    public void addBook(Book book) {
+    public void addBook(T book) {
         books.add(book);
     }
 
     public void printAllBooks(){
-        for (Book book : books){
+        for (T book : books){
             System.out.println(book.getDescription());
         }
     }
 
     public int countReadBooks() {
         int counter = 0;
-        for (Book book : books) {
+        for (T book : books) {
             if (book.isRead()) {
                 counter++;
             }
@@ -47,9 +47,9 @@ public class Shelf {
         return counter;
     }
 
-    public List<Book> findUnreadBooks() {
-        List<Book>unreadBooks = new ArrayList<>();
-        for (Book book : books) {
+    public List<T> findUnreadBooks() {
+        List<T>unreadBooks = new ArrayList<>();
+        for (T book : books) {
             if (!book.isRead()) {
                 unreadBooks.add(book);
             }
@@ -59,14 +59,14 @@ public class Shelf {
 
     public double getTotalPrice() {
         double totalPrice = 0;
-        for (Book book : books) {
+        for (T book : books) {
             totalPrice += book.getPrice();
         }
         return totalPrice;
     }
 
-    public Book findBook(String title) {
-        for (Book book : books) {
+    public T findBook(String title) {
+        for (T book : books) {
             if(book.getTitle().equalsIgnoreCase(title)){
                 return book;
             }
@@ -74,9 +74,9 @@ public class Shelf {
         throw new BookNotFoundException("Книга '" + title + "' не найдена");
     }
 
-    public List<Book> findBooksByDate(LocalDate addedDate) {
-        ArrayList<Book> foundBooks = new ArrayList<>();
-        for (Book book : books) {
+    public List<T> findBooksByDate(LocalDate addedDate) {
+        ArrayList<T> foundBooks = new ArrayList<>();
+        for (T book : books) {
             if(book.getAddedDate().equals(addedDate)){
                 foundBooks.add(book);
             }
@@ -84,9 +84,9 @@ public class Shelf {
         return foundBooks;
     }
 
-    public List<Book> findAuthor(String author) {
-        List<Book> authorBooks = new ArrayList<>();
-        for (Book book : books) {
+    public List<T> findAuthor(String author) {
+        List<T> authorBooks = new ArrayList<>();
+        for (T book : books) {
             if(book.getAuthor().equalsIgnoreCase(author)){
                 authorBooks.add(book);
             }
@@ -95,7 +95,7 @@ public class Shelf {
     }
     public List<String> findAllAuthors(){
         List<String> authors = new ArrayList<>();
-        for (Book book : books){
+        for (T book : books){
             if (!authors.contains(book.getAuthor())){
                 authors.add(book.getAuthor());
             }
@@ -104,8 +104,8 @@ public class Shelf {
     }
     public void sortByTitle(){
         books.sort(Comparator
-            .comparing(Book::getTitle)
-            .thenComparing(Book::getAuthor)
+            .comparing(T::getTitle)
+            .thenComparing(T::getAuthor)
         );
     }
 
@@ -117,9 +117,9 @@ public class Shelf {
         );
     }
 
-    public List<Book> findPurchasedBooks(){
-        List<Book> purchasedBooks = new ArrayList<>();
-        for (Book book : books){
+    public List<T> findPurchasedBooks(){
+        List<T> purchasedBooks = new ArrayList<>();
+        for (T book : books){
             if(book.isPurchased()){
                 purchasedBooks.add(book);
             }
