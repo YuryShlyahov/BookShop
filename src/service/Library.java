@@ -115,13 +115,6 @@ public class Library {
         return sum;
     }
 
-    public List<Book> findUnreadBooks() {
-        List<Book> unreadBooks = new ArrayList<>();
-        for (Shelf<Book> shelf : shelves) {
-            unreadBooks.addAll(shelf.findUnreadBooks());
-        }
-        return unreadBooks;
-    }
 
     public void printUnreadBooks() {
         List<Book> unreadBooks = findUnreadBooks();
@@ -196,6 +189,14 @@ public class Library {
         for (Shelf<Book> shelf : shelves) {
             shelf.sortByDate();
         }
+    }
+
+    public List<Book> findUnreadBooks() {
+        List<Book> unreadBooks = new ArrayList<>();
+        for (Shelf<Book> shelf : shelves) {
+            unreadBooks.addAll(shelf.filterBooks(shelf.getBooks(), book -> !book.isRead()));
+        }
+        return unreadBooks;
     }
 }
 
