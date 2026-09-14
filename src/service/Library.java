@@ -194,7 +194,7 @@ public class Library {
     public List<Book> findUnreadBooks() {
         List<Book> unreadBooks = new ArrayList<>();
         for (Shelf<Book> shelf : shelves) {
-            unreadBooks.addAll(shelf.filterBooks(shelf.getBooks(), book -> !book.isRead()));
+            unreadBooks.addAll(shelf.findUnreadBooks());
         }
         return unreadBooks;
     }

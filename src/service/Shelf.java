@@ -49,13 +49,7 @@ public class Shelf<T extends Book> {
     }
 
     public List<T> findUnreadBooks() {
-        List<T> unreadBooks = new ArrayList<>();
-        for (T book : books) {
-            if (!book.isRead()) {
-                unreadBooks.add(book);
-            }
-        }
-        return unreadBooks;
+        return filterBooks(books, book -> !book.isRead());
     }
 
     public double getTotalPrice() {
@@ -76,23 +70,11 @@ public class Shelf<T extends Book> {
     }
 
     public List<T> findBooksByDate(LocalDate addedDate) {
-        ArrayList<T> foundBooks = new ArrayList<>();
-        for (T book : books) {
-            if (book.getAddedDate().equals(addedDate)) {
-                foundBooks.add(book);
-            }
-        }
-        return foundBooks;
+        return filterBooks(books, book -> book.getAddedDate().equals(addedDate));
     }
 
     public List<T> findAuthor(String author) {
-        List<T> authorBooks = new ArrayList<>();
-        for (T book : books) {
-            if (book.getAuthor().equalsIgnoreCase(author)) {
-                authorBooks.add(book);
-            }
-        }
-        return authorBooks;
+        return filterBooks(books, book -> book.getAuthor().equalsIgnoreCase(author));
     }
 
     public List<String> findAllAuthors() {
@@ -121,13 +103,7 @@ public class Shelf<T extends Book> {
     }
 
     public List<T> findPurchasedBooks() {
-        List<T> purchasedBooks = new ArrayList<>();
-        for (T book : books) {
-            if (book.isPurchased()) {
-                purchasedBooks.add(book);
-            }
-        }
-        return purchasedBooks;
+        return filterBooks(books, Book::isPurchased);
     }
 
     public boolean removeBook(String title) {
@@ -136,10 +112,11 @@ public class Shelf<T extends Book> {
 
     public List<T> filterBooks(List<T> books, Predicate<T> predicate) {
         List<T> filteredBooks = new ArrayList<>();
-        for (T book : books)
+        for (T book : books) {
             if (predicate.test(book)) {
                 filteredBooks.add(book);
             }
+        }
         return filteredBooks;
     }
 }
