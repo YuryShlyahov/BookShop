@@ -1,8 +1,7 @@
 package service;
 
 import exception.BookNotFoundException;
-import model.Book;
-import model.Genre;
+import model.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -118,5 +117,51 @@ public class Shelf<T extends Book> {
             }
         }
         return filteredBooks;
+    }
+
+    public List<EBook> findEbooks(){
+        List<EBook> eBooks = new ArrayList<>();
+        for(T book : books){
+            if(book instanceof EBook){
+                eBooks.add((EBook) book);
+            }
+        }
+        return eBooks;
+    }
+
+    public double findEbooksSize(){
+        double size = 0;
+        for (EBook eBook : findEbooks()){
+            size += eBook.getFileSize();
+        }
+        return size;
+    }
+
+    public List<AudioBook> findAudioBooks(){
+        List<AudioBook> audioBooks = new ArrayList<>();
+        for(T book : books){
+            if(book instanceof AudioBook){
+                audioBooks.add((AudioBook) book);
+            }
+        }
+        return audioBooks;
+    }
+
+    public int findAudioBooksDuration(){
+        int duration = 0;
+        for (AudioBook audioBook : findAudioBooks()){
+            duration += audioBook.getDuration();
+        }
+        return duration;
+    }
+
+    public List<PaperBook> findPaperBooks(){
+        List<PaperBook> paperBooks = new ArrayList<>();
+        for(T book : books){
+            if(book instanceof PaperBook){
+                paperBooks.add((PaperBook) book);
+            }
+        }
+        return paperBooks;
     }
 }

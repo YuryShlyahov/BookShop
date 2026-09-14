@@ -198,6 +198,31 @@ public class Library {
         }
         return unreadBooks;
     }
+
+    public double findEbooksSize(){
+        double eBookSize = 0;
+        for(Shelf<Book> shelf : shelves){
+            eBookSize += shelf.findEbooksSize();
+        }
+        return eBookSize;
+    }
+
+    public void printEbooksSize(){
+        System.out.println("Размер всех электронных книг в библиотеке : " + findEbooksSize());
+    }
+
+    public int findAudioBooksDuration(){
+        int duration = 0;
+        for(Shelf<Book> shelf : shelves){
+            duration += shelf.findAudioBooksDuration();
+        }
+        return duration;
+    }
+
+    public void printAudioBooksDuration(){
+        System.out.println("Продолжительность всех аудиокниг в библиотеке : " + findAudioBooksDuration());
+    }
+
 }
 
 
