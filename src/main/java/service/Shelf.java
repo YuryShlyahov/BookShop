@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class Shelf<T extends Book> {
-    private List<T> books; // — список книг на полке (пустой при создании)
+    private final List<T> books; // — список книг на полке (пустой при создании)
     private final Genre genre;
 
     public List<T> getBooks() {

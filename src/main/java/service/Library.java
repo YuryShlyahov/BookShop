@@ -23,7 +23,7 @@ public class Library {
                 return;
             }
         }
-        Shelf<Book> shelf = new Shelf(book.getGenre());
+        Shelf<Book> shelf = new Shelf<Book>(book.getGenre());
         shelf.addBook(book);
         shelves.add(shelf);
     }

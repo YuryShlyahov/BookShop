@@ -1,8 +1,4 @@
 import console.ConsoleUI;
-import model.AudioBook;
-import model.EBook;
-import model.Genre;
-import model.PaperBook;
 import service.Library;
 
 import java.util.Scanner;
