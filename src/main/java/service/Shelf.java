@@ -28,6 +28,12 @@ public class Shelf<T extends Book> {
     }
 
     public void addBook(T book) {
+        if (book == null) {
+            throw new IllegalArgumentException("Книга не может быть null");
+        }
+        if (books.contains(book)) {
+            throw new IllegalStateException("Такая книга уже есть на полке");
+        }
         books.add(book);
     }
 
