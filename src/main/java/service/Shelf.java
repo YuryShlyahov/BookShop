@@ -135,7 +135,7 @@ public class Shelf<T extends Book> {
         return eBooks;
     }
 
-    public double findEbooksSize(){
+    public double countEbooksSize(){
         double size = 0;
         for (EBook eBook : findEbooks()){
             size += eBook.getFileSize();
@@ -153,7 +153,7 @@ public class Shelf<T extends Book> {
         return audioBooks;
     }
 
-    public int findAudioBooksDuration(){
+    public int countAudioBooksDuration(){
         int duration = 0;
         for (AudioBook audioBook : findAudioBooks()){
             duration += audioBook.getDuration();

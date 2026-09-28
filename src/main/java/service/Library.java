@@ -202,7 +202,7 @@ public class Library {
     public double findEbooksSize(){
         double eBookSize = 0;
         for(Shelf<Book> shelf : shelves){
-            eBookSize += shelf.findEbooksSize();
+            eBookSize += shelf.countEbooksSize();
         }
         return eBookSize;
     }
@@ -214,7 +214,7 @@ public class Library {
     public int findAudioBooksDuration(){
         int duration = 0;
         for(Shelf<Book> shelf : shelves){
-            duration += shelf.findAudioBooksDuration();
+            duration += shelf.countAudioBooksDuration();
         }
         return duration;
     }
