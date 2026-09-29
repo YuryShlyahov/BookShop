@@ -86,5 +86,7 @@ public abstract class Book implements Purchasable {
         isPurchased = true;
     }
 
-
+    public void setAddedDate(LocalDate addedDate) {
+        this.addedDate = addedDate;
+    }
 }

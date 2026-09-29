@@ -44,12 +44,16 @@ class ShelfTest {
         assertThrows(IllegalArgumentException.class, () -> shelf.addBook(null), "Ошибка: не выбрасывается ошибка при добавлении null на полку.");
     }
 
+
+    @Test
+    void shouldNotChangeBookList(){
+        assertThrows(UnsupportedOperationException.class, () -> shelf.getBooks().add(paperBook));
+    }
     @Test
     void shouldThrowExceptionWhenAddingDuplicate() {
         shelf.addBook(paperBook);
         assertThrows(IllegalStateException.class, () -> shelf.addBook(paperBook), "Ошибка: не выбрасывается ошибка при добавлении дубликата книги на полку.");
     }
-
 
     @Test
     void shouldIncreaseNumberOfReadBooks() {
@@ -74,7 +78,6 @@ class ShelfTest {
         assertEquals(200, paperBook.getPrice(), "Ошибка: Стоимость бумажной книги считается некорректно");
         assertEquals(300, kingAudioBook.getPrice(), "Ошибка: Стоимость аудио книги считается некорректно");
         assertEquals(30, marsEBook.getPrice(), "Ошибка: Стоимость электронной книги считается некорректно");
-
     }
 
     @Test
@@ -83,11 +86,11 @@ class ShelfTest {
         shelf.addBook(paperBook);
         shelf.addBook(kingAudioBook);
         shelf.addBook(marsEBook);
-        assertEquals(paperBook.getPrice() + kingAudioBook.getPrice() + marsEBook.getPrice(), shelf.getTotalPrice(),"Ошибка: Общая стоимость книг считается некорректно.");
+        assertEquals(paperBook.getPrice() + kingAudioBook.getPrice() + marsEBook.getPrice(), shelf.getTotalPrice(), "Ошибка: Общая стоимость книг считается некорректно.");
     }
 
     @Test
-    void shouldFindNoPurchasedBooksShelf(){
+    void shouldFindNoPurchasedBooksShelf() {
         testList = new ArrayList<>();
         shelf.addBook(paperBook);
         assertEquals(testList, shelf.findPurchasedBooks(), "Ошибка: неверный результат при поиске купленных книг при их отсутствии на полке");
@@ -119,6 +122,14 @@ class ShelfTest {
         shelf.addBook(paperBook);
         testList = new ArrayList<>(List.of(paperBook));
         assertEquals(testList, shelf.findBooksByDate(LocalDate.now()));
+    }
+
+    @Test
+    void shouldNotFindBookByWrongDate() {
+        paperBook.setAddedDate(LocalDate.of(2000, 11, 11));
+        shelf.addBook(paperBook);
+        testList = new ArrayList<>(List.of(paperBook));
+        assertNotEquals(testList, shelf.findBooksByDate(LocalDate.now()));
     }
 
     @Test
