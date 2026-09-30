@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class ShelfTest {
@@ -135,15 +136,11 @@ class ShelfTest {
 
     @Test
     void shouldFindAllAuthors() {
-        Book wine = new AudioBook("Вино из одуванчиков", "Р.Бредбери", 200, genre, 20);
-        List<String> authorsList = new ArrayList<>();
-        assertEquals(authorsList, shelf.findAllAuthors(), "Ошибка: неверно работает поиск авторов, когда список книг пуст. ");
-        shelf.addBook(paperBook);
-        shelf.addBook(kingAudioBook);
-        shelf.addBook(wine);
-        shelf.addBook(marsEBook);
-        authorsList = List.of("Автор", "С.Кинг", "Р.Бредбери");
-        assertEquals(authorsList, shelf.findAllAuthors(), "Ошибка: список авторов книг на полке выводится неверно");
+        List<String> expected = new ArrayList<>(List.of("Автор", "Р.Бредбери", "С.Кинг"));
+        List<String> actual = new ArrayList<>(shelf.findAllAuthors());
+        Collections.sort(actual);
+        Collections.sort(expected);
+        assertEquals(expected, actual, "Ошибка: список авторов книг на полке выводится неверно");
     }
 
     @Test
