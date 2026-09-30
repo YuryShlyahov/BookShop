@@ -48,8 +48,9 @@ class ShelfTest {
 
     @Test
     void shouldNotChangeBookList(){
-        assertThrows(UnsupportedOperationException.class, () -> shelf.getBooks().add(paperBook));
+        assertThrows(UnsupportedOperationException.class, () -> shelf.getBooks().add(paperBook), "Ошибка, не выбрасывается ошибка при попытке добавления объекта в неизменяемый список");
     }
+
     @Test
     void shouldThrowExceptionWhenAddingDuplicate() {
         shelf.addBook(paperBook);
@@ -115,30 +116,28 @@ class ShelfTest {
 
     @Test
     void shouldThrowExceptionBookNotFound() {
-        assertThrows(BookNotFoundException.class, () -> shelf.findBook("Доктор Живаго"));
+        assertThrows(BookNotFoundException.class, () -> shelf.findBook("Доктор Живаго"), "Ошибка: не выбрасывается исключение при поиске книги, которой нет на полке.");
     }
 
     @Test
     void shouldFindBookByDate() {
         shelf.addBook(paperBook);
         testList = new ArrayList<>(List.of(paperBook));
-        assertEquals(testList, shelf.findBooksByDate(LocalDate.now()));
+        assertEquals(testList, shelf.findBooksByDate(LocalDate.now()), "Ошибка: неверно работает поиск по дате добавления книги на полку");
     }
 
     @Test
     void shouldNotFindBookByWrongDate() {
-        paperBook.setAddedDate(LocalDate.of(2000, 11, 11));
         shelf.addBook(paperBook);
-        testList = new ArrayList<>(List.of(paperBook));
-        assertNotEquals(testList, shelf.findBooksByDate(LocalDate.now()));
+        assertTrue(shelf.findBooksByDate(LocalDate.of(2000, 11, 11)).isEmpty(), "Ошибка: поиск по неверной дате дает некорректный результат");
     }
 
     @Test
     void shouldFindBookByAuthor() {
         testList = new ArrayList<>(List.of(paperBook));
         shelf.addBook(paperBook);
-        assertNotEquals(testList, shelf.findAuthor("author"), "Ошибка, поиск находит книгу по неверному значению автора");
-        assertNotEquals(testList, shelf.findAuthor(""), "Ошибка, поиск находит книгу по неверному значению автора");
+        assertTrue(shelf.findAuthor("author").isEmpty(), "Ошибка, поиск находит книгу по неверному значению автора");
+        assertTrue(shelf.findAuthor("").isEmpty(), "Ошибка, поиск находит книгу по неверному значению автора");
         assertEquals(testList, shelf.findAuthor("Автор"), "Ошибка, неверно работает поиск по автору с корректным регистром");
         assertEquals(testList, shelf.findAuthor("автор"), "Ошибка, неверно работает поиск по автору с некорректным регистром");
         assertEquals(testList, shelf.findAuthor("АВТОР"), "Ошибка, неверно работает поиск по автору с некорректным регистром");
@@ -147,6 +146,9 @@ class ShelfTest {
 
     @Test
     void shouldFindAllAuthors() {
+        shelf.addBook(paperBook);
+        shelf.addBook(marsEBook);
+        shelf.addBook(kingAudioBook);
         List<String> expected = new ArrayList<>(List.of("Автор", "Р.Бредбери", "С.Кинг"));
         List<String> actual = new ArrayList<>(shelf.findAllAuthors());
         Collections.sort(actual);

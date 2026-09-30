@@ -2,7 +2,8 @@ package model;
 
 import java.time.LocalDate;
 
-public abstract class Book implements Purchasable {
+
+public abstract class Book implements Purchasable{
     private String title; // название книги
     private String author; // автор
     private int pages; // количество страниц
@@ -22,7 +23,7 @@ public abstract class Book implements Purchasable {
         this.discount = 0;
         this.addedDate = LocalDate.now();
     }
-//комментарий
+
     public String getTitle() {
         return title;
     }
