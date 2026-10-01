@@ -23,6 +23,8 @@ public class Shelf<T extends Book> {
         this.books = new ArrayList<>();
     }
 
+
+
     public Genre getGenre() {
         return genre;
     }

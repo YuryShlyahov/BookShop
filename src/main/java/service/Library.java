@@ -2,6 +2,7 @@ package service;
 
 import exception.BookNotFoundException;
 import model.Book;
+import model.Genre;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,6 +16,22 @@ public class Library {
     public Library() {
         shelves = new ArrayList<>();
     }
+
+    public void addShelf(Shelf<Book> shelf) {
+        shelves.add(shelf);
+    }
+
+    public Shelf<Book> getOrCreateShelf(Genre genre){
+        for (Shelf<Book> shelf : shelves){
+            if(shelf.getGenre().equals(genre)){
+                return shelf;
+            }
+        }
+        Shelf<Book> genreShelf = new Shelf<>(genre);
+        addShelf(genreShelf);
+        return genreShelf;
+    }
+
 
     public void addBook(Book book) {
         for (Shelf<Book> shelf : shelves) {
