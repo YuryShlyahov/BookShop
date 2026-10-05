@@ -5,48 +5,39 @@ import model.Book;
 import model.Genre;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Library {
-    private List<Shelf<Book>> shelves;
+    private HashMap<Genre, Shelf<Book>> shelves;
 
     public Library() {
-        shelves = new ArrayList<>();
+        shelves = new HashMap<>();
     }
 
     public void addShelf(Shelf<Book> shelf) {
-        shelves.add(shelf);
-    }
-
-    public Shelf<Book> getOrCreateShelf(Genre genre){
-        for (Shelf<Book> shelf : shelves){
-            if(shelf.getGenre().equals(genre)){
-                return shelf;
-            }
+        if (shelves.containsKey(shelf.getGenre())) {
+            System.out.println("Невозможно добавить полку, полка с таким жанром уже сущуствует");
+            return;
+        } else {
+            shelves.put(shelf.getGenre(), shelf);
         }
-        Shelf<Book> genreShelf = new Shelf<>(genre);
-        addShelf(genreShelf);
-        return genreShelf;
     }
 
+    public Shelf<Book> getOrCreateShelf(Genre genre) {
+        Shelf<Book> shelf = shelves.get(genre);
+        if (shelf == null) {
+            shelf = new Shelf<>(genre);
+            addShelf(shelf);
+        }
+        return shelf;
+    }
 
     public void addBook(Book book) {
-        for (Shelf<Book> shelf : shelves) {
-            if (shelf.getGenre().equals(book.getGenre())) {
-                shelf.addBook(book);
-                return;
-            }
-        }
-        Shelf<Book> shelf = new Shelf<Book>(book.getGenre());
-        shelf.addBook(book);
-        shelves.add(shelf);
+        getOrCreateShelf(book.getGenre()).addBook(book);
     }
 
     public void printAllBooks() {
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             System.out.println("Книги жанра - " + shelf.getGenre().getName());
             shelf.printAllBooks();
             System.out.println("***************************");
@@ -54,7 +45,7 @@ public class Library {
     }
 
     public Book findBook(String title) throws BookNotFoundException {
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             try {
                 return shelf.findBook(title);
             } catch (BookNotFoundException e) {
@@ -66,7 +57,7 @@ public class Library {
 
     public List<Book> findBookByDate(LocalDate addedDate) throws BookNotFoundException {
         ArrayList<Book> foundBooks = new ArrayList<>();
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             try {
                 foundBooks.addAll(shelf.findBooksByDate(addedDate));
             } catch (BookNotFoundException e) {
@@ -81,7 +72,7 @@ public class Library {
 
     public List<Book> findAuthor(String author) {
         List<Book> authorBooks = new ArrayList<>();
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             authorBooks.addAll(shelf.findAuthor(author));
         }
         return authorBooks;
@@ -89,7 +80,7 @@ public class Library {
 
     public List<String> findAllAuthors() {
         List<String> authors = new ArrayList<>();
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             for (String author : shelf.findAllAuthors()) {
                 if (!authors.contains(author)) {
                     authors.add(author);
@@ -126,7 +117,7 @@ public class Library {
 
     public int countReadBooks() {
         int sum = 0;
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             sum += shelf.countReadBooks();
         }
         return sum;
@@ -155,7 +146,7 @@ public class Library {
 
     public double getTotalPrice() {
         double totalPrice = 0;
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             totalPrice += shelf.getTotalPrice();
         }
         return totalPrice;
@@ -167,7 +158,7 @@ public class Library {
 
     public List<Book> findPurchasedBooks() {
         List<Book> purchasedBooks = new ArrayList<>();
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             purchasedBooks.addAll(shelf.findPurchasedBooks());
         }
         return purchasedBooks;
@@ -187,7 +178,7 @@ public class Library {
 
     public void removeBook(String title) throws BookNotFoundException {
         boolean removed = false;
-        Iterator<Shelf<Book>> iterator = shelves.iterator();
+        Iterator<Shelf<Book>> iterator = shelves.values().iterator();
         while (iterator.hasNext()) {
             Shelf<Book> shelf = iterator.next();
             if (shelf.removeBook(title)) {
@@ -198,48 +189,47 @@ public class Library {
             }
         }
         if (!removed) {
-            throw new BookNotFoundException("Книга '" + title + "' не найдена в библиотеке");
+            throw new BookNotFoundException("Невозможно удалить книгу, книга не найдена в библиотеке.");
         }
     }
 
     public void sortByAddedDate() {
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             shelf.sortByDate();
         }
     }
 
     public List<Book> findUnreadBooks() {
         List<Book> unreadBooks = new ArrayList<>();
-        for (Shelf<Book> shelf : shelves) {
+        for (Shelf<Book> shelf : shelves.values()) {
             unreadBooks.addAll(shelf.findUnreadBooks());
         }
         return unreadBooks;
     }
 
-    public double findEbooksSize(){
+    public double findEbooksSize() {
         double eBookSize = 0;
-        for(Shelf<Book> shelf : shelves){
+        for (Shelf<Book> shelf : shelves.values()) {
             eBookSize += shelf.countEbooksSize();
         }
         return eBookSize;
     }
 
-    public void printEbooksSize(){
+    public void printEbooksSize() {
         System.out.println("Размер всех электронных книг в библиотеке : " + findEbooksSize());
     }
 
-    public int findAudioBooksDuration(){
+    public int findAudioBooksDuration() {
         int duration = 0;
-        for(Shelf<Book> shelf : shelves){
+        for (Shelf<Book> shelf : shelves.values()) {
             duration += shelf.countAudioBooksDuration();
         }
         return duration;
     }
 
-    public void printAudioBooksDuration(){
+    public void printAudioBooksDuration() {
         System.out.println("Продолжительность всех аудиокниг в библиотеке : " + findAudioBooksDuration());
     }
-
 }
 
 
