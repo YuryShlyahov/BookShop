@@ -15,12 +15,18 @@ public class Library {
     }
 
     public void addShelf(Shelf<Book> shelf) {
-        if (shelves.containsKey(shelf.getGenre())) {
-            System.out.println("Невозможно добавить полку, полка с таким жанром уже сущуствует");
-            return;
-        } else {
-            shelves.put(shelf.getGenre(), shelf);
+        if (shelf == null) {
+            throw new IllegalArgumentException("Полка не может быть null");
         }
+        if (shelves.containsKey(shelf.getGenre())) {
+            throw new IllegalStateException(
+                    "Полка для жанра " + shelf.getGenre() + " уже существует");
+        }
+        shelves.put(shelf.getGenre(), shelf);
+    }
+
+    public Map<Genre, Shelf<Book>> getShelves() {
+        return Collections.unmodifiableMap(shelves);
     }
 
     public Shelf<Book> getOrCreateShelf(Genre genre) {

@@ -4,6 +4,9 @@ import exception.BookNotFoundException;
 import model.*;
 import service.Library;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -123,7 +126,7 @@ public class ConsoleUI {
     }
 
     private void findBookByTitle(String title) {
-        if(title == null || title.trim().isEmpty()){
+        if (title == null || title.trim().isEmpty()) {
             System.err.println("Ошибка:  название не введено, повторите ввод");
             return;
         }
@@ -135,7 +138,7 @@ public class ConsoleUI {
     }
 
     private void findBookByAuthor(String author) {
-        if(author == null || author.trim().isEmpty()){
+        if (author == null || author.trim().isEmpty()) {
             System.err.println("Ошибка:  имя автора не введено, повторите ввод");
             return;
         }
@@ -143,7 +146,7 @@ public class ConsoleUI {
     }
 
     private void markBookAsRead(String title) {
-        if(title == null || title.trim().isEmpty()){
+        if (title == null || title.trim().isEmpty()) {
             System.err.println("Ошибка:  название не введено, повторите ввод");
             return;
         }
@@ -156,13 +159,12 @@ public class ConsoleUI {
     }
 
     private void buyBook(String title) {
-        if(title == null || title.trim().isEmpty()){
+        if (title == null || title.trim().isEmpty()) {
             System.err.println("Ошибка:  название не введено, повторите ввод");
             return;
         }
         try {
-            library.findBook(title);
-            if (library.findBook(title).isPurchased()){
+            if (library.findBook(title).isPurchased()) {
                 System.out.println("Ошибка: книга уже была куплена ранее");
                 return;
             }
@@ -192,13 +194,20 @@ public class ConsoleUI {
     }
 
     private void printUnreadBooks() {
-        System.out.println("Всего прочитанных книг: " + library.countReadBooks() + " шт.");
+        System.out.println("Всего непрочитанных книг: " + library.countReadBooks() + " шт.");
         library.printUnreadBooks();
     }
 
     private void printAllBooks() {
         System.out.println("Список всех книг:");
         library.printAllBooks();
+    }
+
+    private void findBookByDate(LocalDate localDate) {
+        System.out.println("Книги, добавленные в эту дату: ");
+        for (Book book : library.findBookByDate(localDate)){
+            System.out.println(book.getDescription());
+        }
     }
 
     private void printAllAuthors() {
@@ -208,93 +217,98 @@ public class ConsoleUI {
     private void printTotalPrice() {
         library.printTotalPrice();
     }
+
     public void start() {
-            while (true) {
-                printMenu();
-                String command = scanner.nextLine();
-                switch (command) {
-                    case "1":
-                        addBook();
-                        break;
-                    case "2":
-                        System.out.println("Поиск книги по названию");
-                        System.out.println("Введите название книги");
-                        String title = scanner.nextLine();
-                        findBookByTitle(title);
-                        break;
-                    case "3":
-                        System.out.println("Поиск книги по автору");
-                        System.out.println("Введите имя автора");
-                        String author = scanner.nextLine();
-                        findBookByAuthor(author);
-                        break;
-                    case "4":
-                        // ПОКА НЕ РЕАЗИОВАНО
-                        break;
-                    case "5":
-                        System.out.println("Отметить книгу как прочитанную");
-                        System.out.println("Введите название книги");
-                        title = scanner.nextLine();
-                        markBookAsRead(title);
-                        break;
-                    case "6":
-                        System.out.println("Покупка книги");
-                        System.out.println("Введите название книги");
-                        title = scanner.nextLine();
-                        buyBook(title);
-                        break;
-                    case "7":
-                        System.out.println("Удаление книги");
-                        System.out.println("Введите название книги");
-                        title = scanner.nextLine();
-                        deleteBook(title);
-                        break;
-                    case "8":
-                        printAllBooks();
-                        break;
-                    case "9":
-                        printUnreadBooks();
-                        break;
-                    case "10":
-                        printPurchasedBooks();
-                        break;
-                    case "11":
-                        printTotalPrice();
-                        break;
-                    case "12":
-                        printAllAuthors();
-                        break;
-                    case "0":
-                        System.out.println("ВЫХОД ИЗ ПРОГРАММЫ");
-                        return;
-                    default:
-                        System.out.println("Введена некорректная команда. Повторите ввод.");
-                }
+        while (true) {
+            printMenu();
+            String command = scanner.nextLine();
+            switch (command) {
+                case "1":
+                    addBook();
+                    break;
+                case "2":
+                    System.out.println("Поиск книги по названию");
+                    System.out.println("Введите название книги");
+                    String title = scanner.nextLine();
+                    findBookByTitle(title);
+                    break;
+                case "3":
+                    System.out.println("Поиск книги по автору");
+                    System.out.println("Введите имя автора");
+                    String author = scanner.nextLine();
+                    findBookByAuthor(author);
+                    break;
+                case "4":
+                    LocalDate date = null;
+                    while (date == null) {
+                        System.out.print("Введите дату добавления книги в формате (dd.MM.yyyy): ");
+                        String input = scanner.nextLine().trim();
+                        try {
+                            date = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Неверный формат. Попробуйте снова.");
+                        }
+                    }
+                        findBookByDate(date);
+                    break;
+                case "5":
+                    System.out.println("Отметить книгу как прочитанную");
+                    System.out.println("Введите название книги");
+                    title = scanner.nextLine();
+                    markBookAsRead(title);
+                    break;
+                case "6":
+                    System.out.println("Покупка книги");
+                    System.out.println("Введите название книги");
+                    title = scanner.nextLine();
+                    buyBook(title);
+                    break;
+                case "7":
+                    System.out.println("Удаление книги");
+                    System.out.println("Введите название книги");
+                    title = scanner.nextLine();
+                    deleteBook(title);
+                    break;
+                case "8":
+                    printAllBooks();
+                    break;
+                case "9":
+                    printUnreadBooks();
+                    break;
+                case "10":
+                    printPurchasedBooks();
+                    break;
+                case "11":
+                    printTotalPrice();
+                    break;
+                case "12":
+                    printAllAuthors();
+                    break;
+                case "0":
+                    System.out.println("ВЫХОД ИЗ ПРОГРАММЫ");
+                    return;
+                default:
+                    System.out.println("Введена некорректная команда. Повторите ввод.");
             }
         }
+    }
 
-        private static void printMenu() {
-            {
-                System.out.println("Выберите команду:");
-                System.out.println("1 - Добавить книгу");
-                System.out.println("2 - Найти книгу по названию");
-                System.out.println("3 - Найти книги по автору");
-                System.out.println("4 - Найти книги по дате добавления");
-                System.out.println("5 - Отметить книгу как прочитанную");
-                System.out.println("6 - Купить книгу");
-                System.out.println("7 - Удалить книгу");
-                System.out.println("8 - Показать все книги");
-                System.out.println("9 - Показать все непрочитанные книги");
-                System.out.println("10 - Показать все купленные книги");
-                System.out.println("11 - Показать общую стоимость всех книг");
-                System.out.println("12 - Показать всех авторов");
-                System.out.println("13 - ");
-                System.out.println("14 - ");
-                System.out.println("15 - ");
-                System.out.println("16 - ");
-                System.out.println("17 - ");
-                System.out.println("18 - ");
-                System.out.println("0 - Выйти из программы");
-            }
+    private static void printMenu() {
+        {
+            System.out.println("Выберите команду:");
+            System.out.println("1 - Добавить книгу");
+            System.out.println("2 - Найти книгу по названию");
+            System.out.println("3 - Найти книги по автору");
+            System.out.println("4 - Найти книги по дате добавления");
+            System.out.println("5 - Отметить книгу как прочитанную");
+            System.out.println("6 - Купить книгу");
+            System.out.println("7 - Удалить книгу");
+            System.out.println("8 - Показать все книги");
+            System.out.println("9 - Показать все непрочитанные книги");
+            System.out.println("10 - Показать все купленные книги");
+            System.out.println("11 - Показать общую стоимость всех книг");
+            System.out.println("12 - Показать всех авторов");
+            System.out.println("0 - Выйти из программы");
+        }
     }
 }
