@@ -30,6 +30,9 @@ public class Library {
     }
 
     public Shelf<Book> getOrCreateShelf(Genre genre) {
+        if (genre == null) {
+            throw new IllegalArgumentException("Жанр не может быть null");
+        }
         Shelf<Book> shelf = shelves.get(genre);
         if (shelf == null) {
             shelf = new Shelf<>(genre);
@@ -51,6 +54,9 @@ public class Library {
     }
 
     public Book findBook(String title) throws BookNotFoundException {
+        if (title == null) {
+            throw new IllegalArgumentException("Название книги не может быть null");
+        }
         for (Shelf<Book> shelf : shelves.values()) {
             try {
                 return shelf.findBook(title);
@@ -62,6 +68,9 @@ public class Library {
     }
 
     public List<Book> findBookByDate(LocalDate addedDate) throws BookNotFoundException {
+        if (addedDate == null) {
+            throw new IllegalArgumentException("Дата добавления книги не может быть null");
+        }
         ArrayList<Book> foundBooks = new ArrayList<>();
         for (Shelf<Book> shelf : shelves.values()) {
             try {

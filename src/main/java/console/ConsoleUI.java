@@ -194,7 +194,6 @@ public class ConsoleUI {
     }
 
     private void printUnreadBooks() {
-        System.out.println("Всего непрочитанных книг: " + library.countReadBooks() + " шт.");
         library.printUnreadBooks();
     }
 
